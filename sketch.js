@@ -1,180 +1,43 @@
+var sea,ship;
+var seaImg,shipImg;
 
-var PLAY = 1;
-var END = 0;
-var gameState = PLAY;
-var bow , arrow,  background, redB, pinkB, greenB ,blueB ,arrowGroup;
-var bowImage, arrowImage, green_balloonImage, red_balloonImage, pink_balloonImage ,blue_balloonImage, backgroundImage;
-
-var score =0;
 function preload(){
-  
-  backgroundImage = loadImage("background0.png");
-  
-  arrowImage = loadImage("arrow0.png");
-  bowImage = loadImage("bow0.png");
-  red_balloonImage = loadImage("red_balloon0.png");
-  green_balloonImage = loadImage("green_balloon0.png");
-  pink_balloonImage = loadImage("pink_balloon0.png");
-  blue_balloonImage = loadImage("blue_balloon0.png");
-  
+  seaImg = loadImage("sea.png");
+  shipImg1=loadAnimation("sea.png")
+//Choose the correct option by uncommenting the right line to load the animation for ship.
+  shipImg1 = loadAnimation("ship-1.png","ship-1.png","ship-2.png","ship-1.png");
+  //shipImg1 = loadAnimation("ship-1","ship-1","ship-2","ship-1");
+  //shipImg1 = loadAnimation("1.png","2.png","3.png","4.png");
+
 }
 
+function setup(){
+  createCanvas(400,400);
+  background("blue");
 
+  // Moving background
+  sea=createSprite(400,200);
+  sea.addImage(seaImg);
+  sea.scale=0.3;
 
-function setup() {
-  createCanvas(400, 400);
   
-  //creating background
-  scene = createSprite(0,0,400,400);
-  scene.addImage(backgroundImage);
-  scene.scale = 2.5
-  
-  // creating bow to shoot arrow
-  bow = createSprite(380,220,20,50);
-  bow.addImage(bowImage); 
-  bow.scale = 1;
-  
-   score = 0  
- redB= new Group();
- 
-  arrowGroup= new Group();
-
+  ship = createSprite(130,200,30,30);
+  ship.addAnimation("movingShip",shipImg1);
+  ship.scale =0.25;
   
 }
 
 function draw() {
- background(0);
- 
-
- 
- if(gameState === PLAY)
- {
-      /*Uncomment correct option 
-        according to PLAY state*/  
-      // // moving ground
-       scene.velocityX = -3 
-      // //destroy bow
-       bow.destroy();
-      // //reset the background
-       if (scene.x < 0){
-           scene.x = scene.width/2;
-      //    }
-      // //moving bow
-       bow.y = World.mouseY      
-      // //stop background movement
-      // scene.velocityX = 0;
+  background(0);
+  
+//Uncomment the correct line to make the background move to create a forward moving effect for the boat.
+  //sea.velocityY = -3;
+  //sea.x = -3;
+  sea.velocityX = -3;
+  //sea.velocityX = 3;
+  
 
   
-   // release arrow when space key is pressed
-  if (keyDown("space")) {
-    createArrow();  
-  }
-  
-  //creating continous enemies
-  var select_balloon = Math.round(random(1,4));
-  
-  if (World.frameCount % 100 == 0) {
-    switch(select_balloon ){
-      case 1: redBalloon();
-      break;
-      case 2:blueBalloon();
-      break;
-      case 3:pinkBalloon();
-      break;
-      case 4:greenBalloon();
-      break;
-      default:break;
-    }
-  }
- }
-
-
-  if (gameState === END) {
-    /*Uncomment correct option 
-      according to END state*/  
-      // // moving ground
-      // scene.velocityX = -3 
-      // //destroy bow
-       bow.destroy();
-      // //reset the background
-      // if (scene.x < 0){
-      //     scene.x = scene.width/2;
-      //    }
-      // //moving bow
-      // bow.y = World.mouseY      
-      // //stop background movement
-       scene.velocityX = 0;
-
-  }
-
-if (frameCount>1000) {
-  red.destroyEach();
-  gameState=END; 
-}
-
-
-
-
- 
-  
+    
   drawSprites();
-  text("Score: "+ score, 300,50);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-function redBalloon() {
-  var red = createSprite(0,Math.round(random(20, 370)), 10, 10);
-  red.addImage(red_balloonImage);
-  red.velocityX = 3;
-  red.lifetime = 150;
-  red.scale = 0.1;
-  redB.add(red);
-}
-
-function blueBalloon() {
-  var blue = createSprite(0,Math.round(random(20, 370)), 10, 10);
-  blue.addImage(blue_balloonImage);
-  blue.velocityX = 3;
-  blue.lifetime = 150;
-  blue.scale = 0.1;
-}
-
-function greenBalloon() {
-  var green = createSprite(0,Math.round(random(20, 370)), 10, 10);
-  green.addImage(green_balloonImage);
-  green.velocityX = 3;
-  green.lifetime = 150;
-  green.scale = 0.1;
-}
-
-function pinkBalloon() {
-  var pink = createSprite(0,Math.round(random(20, 370)), 10, 10);
-  pink.addImage(pink_balloonImage);
-  pink.velocityX = 3;
-  pink.lifetime = 150;
-  pink.scale = 1
-
-}
-
-// Creating  arrows for bow
- function createArrow() {
-  var arrow= createSprite(100, 100, 60, 10);
-  arrow.addImage(arrowImage);
-  arrow.x = 360;
-  arrow.y=bow.y;
-  arrow.velocityX = -4;
-  arrow.lifetime = 100;
-  arrow.scale = 0.3;
-  arrowGroup.add(arrow);
-
 }
